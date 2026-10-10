@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Production build
+frontend/dist/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+
+# Environment variables & editor configs
+.env
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+yarn-debug.log*
