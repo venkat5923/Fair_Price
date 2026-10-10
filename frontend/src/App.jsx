@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import StatusBar, { HomeIndicator } from './components/StatusBar';
 import BottomNav from './components/BottomNav';
 import ScreenHome from './components/ScreenHome';
 import ScreenMandiLocator from './components/ScreenMandiLocator';
@@ -9,7 +8,6 @@ import ScreenProfileSettings from './components/ScreenProfileSettings';
 import ScreenMarketAlerts from './components/ScreenMarketAlerts';
 
 import { fetchCrops, fetchPrediction, fetchMandiComparison } from './services/api';
-import { Smartphone, LayoutGrid } from 'lucide-react';
 
 const DEFAULT_CROPS = [
   {"id": 1, "name": "Tomato", "telugu_name": "టమోటా", "tamil_name": "தக்காளி", "icon": "🍅", "category": "Vegetables"},
@@ -20,8 +18,7 @@ const DEFAULT_CROPS = [
 ];
 
 export default function App() {
-  const [viewMode, setViewMode] = useState('single'); // 'single' | 'gallery'
-  const [activeTab, setActiveTab] = useState('home'); // 'home' | 'mandi' | 'trends' | 'alerts' | 'settings' | 'mandi-detail'
+  const [activeTab, setActiveTab] = useState('home');
   const [previousTab, setPreviousTab] = useState('home');
 
   const [lang, setLang] = useState('en');
@@ -110,8 +107,8 @@ export default function App() {
   const selectedCrop = crops.find(c => c.id === selectedCropId) || crops[0];
 
   // Helper to render the active screen content
-  const renderScreen = (screenName = activeTab) => {
-    switch (screenName) {
+  const renderScreen = () => {
+    switch (activeTab) {
       case 'home':
         return (
           <ScreenHome
@@ -187,114 +184,16 @@ export default function App() {
   };
 
   return (
-    <div className="desktop-preview-container">
-      {/* Top Preview Control Bar for Desktop */}
-      <div className="preview-toolbar">
-        <div className="preview-logo">
-          <span style={{ fontSize: '1.2rem' }}>🌱</span>
-          <span>FairPrice Mobile App</span>
-          <span className="preview-logo-badge">Figma UI</span>
-        </div>
-
-        <div className="view-mode-buttons">
-          <button 
-            className={`view-mode-btn ${viewMode === 'single' ? 'active' : ''}`}
-            onClick={() => setViewMode('single')}
-          >
-            <Smartphone size={16} />
-            <span>Interactive Mobile</span>
-          </button>
-          <button 
-            className={`view-mode-btn ${viewMode === 'gallery' ? 'active' : ''}`}
-            onClick={() => setViewMode('gallery')}
-          >
-            <LayoutGrid size={16} />
-            <span>All 6 Figma Screens</span>
-          </button>
-        </div>
-      </div>
-
-      {/* Mode 1: Single Interactive Mobile Phone */}
-      {viewMode === 'single' ? (
-        <div className="device-frame">
-          <StatusBar />
+    <div className="app-shell">
+      <div className="app-container">
+        <main className="app-main-content">
           {renderScreen()}
-          <BottomNav 
-            activeTab={activeTab === 'mandi-detail' ? 'mandi' : activeTab} 
-            onTabChange={handleTabChange} 
-          />
-          <HomeIndicator />
-        </div>
-      ) : (
-        /* Mode 2: Gallery showing all 6 Figma screens side-by-side */
-        <div className="artboards-gallery">
-          {/* Screen 1: Home */}
-          <div className="artboard-item">
-            <div className="artboard-title">1. FairPrice Intelligence (Home)</div>
-            <div className="device-frame" style={{ width: '360px', height: '780px' }}>
-              <StatusBar />
-              {renderScreen('home')}
-              <BottomNav activeTab="home" onTabChange={() => {}} />
-              <HomeIndicator />
-            </div>
-          </div>
-
-          {/* Screen 2: Mandi Locator */}
-          <div className="artboard-item">
-            <div className="artboard-title">2. Best Mandi Locator</div>
-            <div className="device-frame" style={{ width: '360px', height: '780px' }}>
-              <StatusBar />
-              {renderScreen('mandi')}
-              <BottomNav activeTab="mandi" onTabChange={() => {}} />
-              <HomeIndicator />
-            </div>
-          </div>
-
-          {/* Screen 3: Trends & Forecast */}
-          <div className="artboard-item">
-            <div className="artboard-title">3. Price Trends & AI Forecast</div>
-            <div className="device-frame" style={{ width: '360px', height: '780px' }}>
-              <StatusBar />
-              {renderScreen('trends')}
-              <BottomNav activeTab="trends" onTabChange={() => {}} />
-              <HomeIndicator />
-            </div>
-          </div>
-
-          {/* Screen 4: Mandi Detail */}
-          <div className="artboard-item">
-            <div className="artboard-title">4. Guntur APMC — Tomato Detail</div>
-            <div className="device-frame" style={{ width: '360px', height: '780px' }}>
-              <StatusBar />
-              {renderScreen('mandi-detail')}
-              <BottomNav activeTab="mandi" onTabChange={() => {}} />
-              <HomeIndicator />
-            </div>
-          </div>
-
-          {/* Screen 5: Profile & Settings */}
-          <div className="artboard-item">
-            <div className="artboard-title">5. Profile & Preferences</div>
-            <div className="device-frame" style={{ width: '360px', height: '780px' }}>
-              <StatusBar />
-              {renderScreen('settings')}
-              <BottomNav activeTab="settings" onTabChange={() => {}} />
-              <HomeIndicator />
-            </div>
-          </div>
-
-          {/* Screen 6: Live Alerts */}
-          <div className="artboard-item">
-            <div className="artboard-title">6. Live Market Price Alerts</div>
-            <div className="device-frame" style={{ width: '360px', height: '780px' }}>
-              <StatusBar />
-              {renderScreen('alerts')}
-              <BottomNav activeTab="alerts" onTabChange={() => {}} />
-              <HomeIndicator />
-            </div>
-          </div>
-        </div>
-      )}
+        </main>
+        <BottomNav 
+          activeTab={activeTab === 'mandi-detail' ? 'mandi' : activeTab} 
+          onTabChange={handleTabChange} 
+        />
+      </div>
     </div>
   );
 }
